@@ -12,6 +12,8 @@ jobs:
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: Set Up Git
       run: |
@@ -23,4 +25,10 @@ jobs:
         echo "Last updated: $(date)" > last_update.txt
         git add last_update.txt
         git commit -m "Auto-update: $(date)" || echo "No changes to commit"
+
+    - name: Push Changes
+      env:
+        GH_PAT: ${{ secrets.GH_PAT }}
+      run: |
+        git remote set-url origin https://Hardeep56:${GH_PAT}@github.com/Hardeep56/daily-commit-bot.git
         git push
